@@ -9,7 +9,7 @@ from sqlalchemy import Date, cast, func, select
 from starlette.middleware.sessions import SessionMiddleware
 
 from .config import settings
-from .database import SessionLocal, init_db
+from .database import SessionLocal, init_db, seed_if_empty
 from .models import Lead
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
@@ -23,8 +23,9 @@ VALID_STATUSES = {"new", "contacted", "closed"}
 
 @app.on_event("startup")
 async def _on_startup() -> None:
-    """Make sure tables exist (also lets the admin run standalone)."""
+    """Make sure tables exist and sample data is present (standalone-safe)."""
     await init_db()
+    await seed_if_empty()
 
 
 def is_admin(request: Request) -> bool:

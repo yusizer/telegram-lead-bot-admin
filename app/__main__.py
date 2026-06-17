@@ -6,12 +6,13 @@ import uvicorn
 
 from .bot import start_bot
 from .config import settings
-from .database import init_db
+from .database import init_db, seed_if_empty
 from .web import app
 
 
 async def main() -> None:
     await init_db()
+    await seed_if_empty()
 
     port = int(os.environ.get("PORT", settings.web_port))
     config = uvicorn.Config(

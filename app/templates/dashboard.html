@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Дашборд — Lead Bot Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Дашборд</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="card stat-card p-3">
+      <div class="text-muted small">Всего заявок</div>
+      <div class="stat-value text-primary">{{ stats.total }}</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card p-3">
+      <div class="text-muted small">За сегодня</div>
+      <div class="stat-value">{{ stats.today }}</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card p-3">
+      <div class="text-muted small">Новые</div>
+      <div class="stat-value text-info">{{ stats.new }}</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card p-3">
+      <div class="text-muted small">Закрытые</div>
+      <div class="stat-value text-success">{{ stats.closed }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="mb-0">Последние заявки</h5>
+  <a href="/leads" class="btn btn-sm btn-outline-primary">Все заявки →</a>
+</div>
+
+<div class="card stat-card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr><th>#</th><th>Имя</th><th>Контакт</th><th>Задача</th><th>Статус</th><th>Дата</th></tr>
+      </thead>
+      <tbody>
+      {% for l in recent %}
+        <tr>
+          <td>{{ l.id }}</td>
+          <td>{{ l.name }}</td>
+          <td>{{ l.contact }}</td>
+          <td class="text-truncate" style="max-width:260px;">{{ l.task }}</td>
+          <td><span class="badge badge-{{ l.status }}">{{ l.status }}</span></td>
+          <td class="text-muted small">{{ l.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-center text-muted py-4">Заявок пока нет.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

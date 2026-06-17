@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Заявки — Lead Bot Admin{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Заявки</h3>
+  <div class="btn-group">
+    <a href="/leads" class="btn btn-sm btn-outline-secondary {% if not current %}active{% endif %}">Все</a>
+    {% for s in statuses %}
+      <a href="/leads?status={{ s }}" class="btn btn-sm btn-outline-secondary {% if current == s %}active{% endif %}">{{ s }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card stat-card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr><th>#</th><th>Имя</th><th>Контакт</th><th>Задача</th><th>Статус</th><th>Дата</th><th>Сменить статус</th></tr>
+      </thead>
+      <tbody>
+      {% for l in leads %}
+        <tr>
+          <td>{{ l.id }}</td>
+          <td>{{ l.name }}</td>
+          <td>{{ l.contact }}</td>
+          <td style="max-width:280px;">{{ l.task }}</td>
+          <td><span class="badge badge-{{ l.status }}">{{ l.status }}</span></td>
+          <td class="text-muted small">{{ l.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>
+            <form method="post" action="/leads/{{ l.id }}/status" class="d-flex gap-1">
+              <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                {% for s in statuses %}
+                  <option value="{{ s }}" {% if l.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+              </select>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">Заявок нет.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

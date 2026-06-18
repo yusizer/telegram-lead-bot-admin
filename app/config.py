@@ -9,7 +9,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    telegram_bot_token: str
+    telegram_bot_token: str = "1111111111:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     admin_password: str = "admin"
     session_secret: str = "change-this-to-a-long-random-string"
     database_url: str = "sqlite+aiosqlite:///./leads.db"

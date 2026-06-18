@@ -6,3 +6,4 @@ sqlalchemy[asyncio]==2.0.35
 aiosqlite==0.20.0
 pydantic-settings==2.5.2
 python-multipart==0.0.12
+itsdangerous==2.2.0  # starlette SessionMiddleware (signed sessions)

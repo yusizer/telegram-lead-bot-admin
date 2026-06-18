@@ -1,5 +1,7 @@
 # Telegram Lead Bot + Admin Panel 🤖📊
 
+![CI](https://github.com/yusizer/telegram-lead-bot-admin/actions/workflows/ci.yml/badge.svg)
+
 Telegram-бот, который через пошаговый диалог (FSM) собирает заявки (лиды) и
 FastAPI-админку с дашбордом и управлением статусами заявок. Один процесс,
 один Docker-контейнер — готово к деплою на Railway.

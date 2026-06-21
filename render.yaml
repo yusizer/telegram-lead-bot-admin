@@ -1,0 +1,30 @@
+# Render Blueprint — one-click deploy.
+# Go to https://render.com/deploy?repo=https://github.com/yusizer/telegram-lead-bot-admin
+services:
+  - type: web
+    name: telegram-lead-bot-admin
+    runtime: python
+    plan: free
+    region: frankfurt  # EU; change to oregon if you prefer US
+    buildCommand: pip install -r requirements.txt
+    # Serve only the FastAPI admin (no bot polling — demo token is a placeholder).
+    startCommand: uvicorn app.web:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Pin Python 3.12 — pydantic-core has no wheel for 3.14,
+      # so 3.14 triggers a Rust source build that fails on Render.
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      # Demo admin password — shown on the portfolio case page so clients can log in.
+      - key: ADMIN_PASSWORD
+        value: "demo"
+      # Strong per-instance session signing key.
+      - key: SESSION_SECRET
+        generateValue: true
+      # SQLite (ephemeral on free plan — resets on redeploy, fine for a demo;
+      # seed_if_empty() repopulates sample leads on every boot).
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./leads.db
+      - key: WEB_HOST
+        value: 0.0.0.0

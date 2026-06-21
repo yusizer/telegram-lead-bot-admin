@@ -13,4 +13,7 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["python", "-m", "app"]
+# Serve only the FastAPI admin panel. `python -m app` would also start
+# Telegram long-polling, which fails with the placeholder bot token —
+# for the admin-only demo container we serve the web app directly.
+CMD ["uvicorn", "app.web:app", "--host", "0.0.0.0", "--port", "8000"]
